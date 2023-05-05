@@ -36,7 +36,11 @@ public class GroundSpawner : MonoBehaviour
 
     private IEnumerator UnActiveGround(Transform previousGround)
     {
-        yield return new WaitForSeconds(4f);
+        yield return new WaitForSeconds(.2f);
+
+        previousGround.gameObject.AddComponent<Rigidbody>();
+
+        yield return new WaitForSeconds(1f);
 
         previousGround.gameObject.SetActive(false);
     }

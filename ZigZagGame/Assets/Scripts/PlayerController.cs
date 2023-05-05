@@ -11,6 +11,8 @@ public class PlayerController : MonoBehaviour
 
     private GroundSpawner _groundSpawner;
 
+    public bool isDead;
+
     private void Awake()
     {
         _groundSpawner = GetComponentInChildren<GroundSpawner>();
@@ -18,6 +20,8 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (isDead) return;
+
         Vector3 hareket = _direction * speed * Time.deltaTime;
 
         transform.position += hareket;
@@ -25,12 +29,20 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
+        if (isDead) return;
+
         if (Input.GetMouseButtonDown(0))
         {
             if(_direction.x == 0) _direction = Vector3.left;
 
             else _direction = Vector3.forward;
-        }   
+        }
+
+        if(transform.position.y < -1f)
+        {
+            isDead = true;
+            gameObject.SetActive(false);
+        }
     }
 
     private void OnCollisionExit(Collision collision)

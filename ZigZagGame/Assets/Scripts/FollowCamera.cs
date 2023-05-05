@@ -7,6 +7,13 @@ public class FollowCamera : MonoBehaviour
     [SerializeField] private Vector3 offSet;
     [SerializeField] private Transform target;
 
+    private PlayerController playerController;
+
+    private void Awake()
+    {
+        playerController = target.GetComponent<PlayerController>();
+    }
+
     private void Start()
     {
         offSet = transform.position - target.position;
@@ -14,6 +21,8 @@ public class FollowCamera : MonoBehaviour
 
     private void LateUpdate()
     {
+        if (playerController.isDead) return;
+        
         transform.position = (target.position + offSet);
     }
 }
