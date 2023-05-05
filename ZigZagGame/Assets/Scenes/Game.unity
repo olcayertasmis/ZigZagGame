@@ -1058,6 +1058,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   uIManager: {fileID: 977760512}
+  player: {fileID: 1442775275}
 --- !u!1 &1237571071
 GameObject:
   m_ObjectHideFlags: 0
@@ -1472,6 +1473,7 @@ MonoBehaviour:
   speed: 1
   uIManager: {fileID: 977760512}
   isDead: 0
+  isStart: 0
 --- !u!54 &1442775276
 Rigidbody:
   m_ObjectHideFlags: 0
