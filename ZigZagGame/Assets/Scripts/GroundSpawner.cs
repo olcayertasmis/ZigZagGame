@@ -4,10 +4,12 @@ using UnityEngine;
 
 public class GroundSpawner : MonoBehaviour
 {
-
+    [Header("Outside Compenents")]
     [SerializeField] private Transform lastGround;
 
+    [Header("Ground Variables")]
     private Vector3 _direction;
+    private int _leftCount, _forwardCount;
 
     private void Awake()
     {
@@ -19,11 +21,27 @@ public class GroundSpawner : MonoBehaviour
 
     public void CreateGround()
     {
+        if (Random.Range(0, 2) == 0 && _leftCount < 2)
+        {
+            _direction = Vector3.left;
+            _leftCount++;
+        }
+        else
+        {
+            _leftCount = 0;
+            _direction = Vector3.forward;
+        }
 
-        if(Random.Range(0,2) == 0) _direction = Vector3.left;
-
-        else _direction = Vector3.forward;
-
+        if (Random.Range(0, 2) == 1 && _forwardCount < 2)
+        {
+            _direction = Vector3.forward;
+            _forwardCount++;
+        }
+        else
+        {
+            _forwardCount = 0;
+            _direction = Vector3.left;
+        }
 
         lastGround = Instantiate(lastGround, lastGround.position + _direction, lastGround.rotation,lastGround.parent);
         lastGround.name = "Ground";

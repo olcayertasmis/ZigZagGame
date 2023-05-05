@@ -5,11 +5,20 @@ using UnityEngine.UI;
 
 public class Score : MonoBehaviour
 {
+    [Header("Score Variables")]
     public float score;
-    private float increaseAmount = 1.25f;
+    private float _increaseAmount = 1.25f;
 
-    private void FixedUpdate()
+    private void Update()
     {
-        score += (increaseAmount * Time.deltaTime);
+        score += (_increaseAmount * Time.deltaTime);
+
+        UpdateBestScore();
+    }
+
+    private void UpdateBestScore()
+    {
+        if(PlayerPrefs.GetFloat("BestScore") < (int)score) PlayerPrefs.SetFloat("BestScore", score);
+
     }
 }

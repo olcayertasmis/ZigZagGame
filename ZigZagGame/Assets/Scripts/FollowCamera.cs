@@ -4,9 +4,11 @@ using UnityEngine;
 
 public class FollowCamera : MonoBehaviour
 {
+    [Header("Camera outside compenents")]
     [SerializeField] private Vector3 offSet;
     [SerializeField] private Transform target;
 
+    [Header("Other Scripts")]
     private PlayerController playerController;
 
     private void Awake()
