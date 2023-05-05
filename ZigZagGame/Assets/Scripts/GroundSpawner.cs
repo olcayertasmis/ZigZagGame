@@ -9,15 +9,15 @@ public class GroundSpawner : MonoBehaviour
 
     private Vector3 _direction;
 
-    private void Start()
+    private void Awake()
     {
-        for(int i = 1; i <=10; i++)
+        for(int i = 1; i <=1; i++)
         {
             CreateGround();
         }
     }
 
-    private void CreateGround()
+    public void CreateGround()
     {
 
         if(Random.Range(0,2) == 0) _direction = Vector3.left;
@@ -25,7 +25,20 @@ public class GroundSpawner : MonoBehaviour
         else _direction = Vector3.forward;
 
 
-        lastGround = Instantiate(lastGround, lastGround.position + _direction, lastGround.rotation);
+        lastGround = Instantiate(lastGround, lastGround.position + _direction, lastGround.rotation,lastGround.parent);
+        lastGround.name = "Ground";
+    }
+
+    public void UnActiveGroundTask(Transform previousGround)
+    {
+        StartCoroutine(UnActiveGround(previousGround));
+    }
+
+    private IEnumerator UnActiveGround(Transform previousGround)
+    {
+        yield return new WaitForSeconds(4f);
+
+        previousGround.gameObject.SetActive(false);
     }
 
 }//Class
