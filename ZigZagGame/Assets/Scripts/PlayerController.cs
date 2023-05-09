@@ -1,16 +1,20 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class PlayerController : MonoBehaviour
 {
     [Header("Player Movement")]
     private Vector3 _direction = Vector3.forward;
     [SerializeField] private float speed;
+    private int speedControl = 0;
 
     [Header("Other Scripts")]
     private GroundSpawner _groundSpawner;
     [SerializeField] private UIManager uIManager;
+    private Score score;
 
     [Header("Player Control")]
     public bool isDead;
@@ -19,24 +23,26 @@ public class PlayerController : MonoBehaviour
     private void Awake()
     {
         _groundSpawner = GetComponentInChildren<GroundSpawner>();
+        score = GetComponent<Score>();
     }
 
     private void FixedUpdate()
     {
-        if (isDead && !isStart) return;
+        if (!isDead && !isStart) return;
 
-        Vector3 hareket = _direction * speed * Time.deltaTime;
+        Vector3 hareket = _direction * (speed * Time.deltaTime);
 
         transform.position += hareket;
     }
 
     private void Update()
     {
-        if (isDead && !isStart) return;
+        if (isDead) OnDead();
+        if (!isDead && !isStart) return;
+        if (transform.position.y < -1f) OnDead();
 
         PlayerMovement();
-
-        OnDead();
+        CheckScore30Mod();
     }
 
     private void PlayerMovement()
@@ -46,6 +52,16 @@ public class PlayerController : MonoBehaviour
             if (_direction.x == 0) _direction = Vector3.left;
 
             else _direction = Vector3.forward;
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Diamond"))
+        {
+            score.IncreaseScore(5f);
+
+            other.gameObject.SetActive(false);
         }
     }
 
@@ -61,14 +77,18 @@ public class PlayerController : MonoBehaviour
 
     private void OnDead()
     {
-        if (transform.position.y < -1f)
-        {
-            isDead = true;
-            gameObject.SetActive(false);
-            uIManager.RestartPanel(true);
-            uIManager.PlayPanel(false);
-        }
+        isDead = true;
+        gameObject.SetActive(false);
+        uIManager.RestartPanel(true);
+        uIManager.PlayPanel(false);
     }
 
-
-}//Class
+    private void CheckScore30Mod()
+    {
+        if ((int)score.score / 30 > speedControl && score.score != 0)
+        {
+            speed += .25f;
+            speedControl++;
+        }
+    }
+} //Class

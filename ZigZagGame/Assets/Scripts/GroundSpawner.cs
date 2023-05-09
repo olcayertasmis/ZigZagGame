@@ -1,11 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class GroundSpawner : MonoBehaviour
 {
     [Header("Outside Compenents")]
-    [SerializeField] private Transform lastGround;
+    [SerializeField] private Transform newGround;
+    [SerializeField] private GameObject gold;
 
     [Header("Ground Variables")]
     private Vector3 _direction;
@@ -13,7 +16,7 @@ public class GroundSpawner : MonoBehaviour
 
     private void Awake()
     {
-        for(int i = 1; i <=1; i++)
+        for (int i = 1; i <= 1; i++)
         {
             CreateGround();
         }
@@ -21,7 +24,7 @@ public class GroundSpawner : MonoBehaviour
 
     public void CreateGround()
     {
-        if (Random.Range(0, 2) == 0 && _leftCount < 2)
+        if (Random.Range(0, 2) == 0 && _leftCount <= 2)
         {
             _direction = Vector3.left;
             _leftCount++;
@@ -32,7 +35,7 @@ public class GroundSpawner : MonoBehaviour
             _direction = Vector3.forward;
         }
 
-        if (Random.Range(0, 2) == 1 && _forwardCount < 2)
+        if (Random.Range(0, 2) == 1 && _forwardCount <= 2)
         {
             _direction = Vector3.forward;
             _forwardCount++;
@@ -43,8 +46,10 @@ public class GroundSpawner : MonoBehaviour
             _direction = Vector3.left;
         }
 
-        lastGround = Instantiate(lastGround, lastGround.position + _direction, lastGround.rotation,lastGround.parent);
-        lastGround.name = "Ground";
+        newGround = Instantiate(newGround, newGround.position + _direction, newGround.rotation, newGround.parent);
+        newGround.name = "Ground";
+
+        CreateGoldRandom(newGround);
     }
 
     public void UnActiveGroundTask(Transform previousGround)
@@ -63,4 +68,13 @@ public class GroundSpawner : MonoBehaviour
         previousGround.gameObject.SetActive(false);
     }
 
-}//Class
+    private void CreateGoldRandom(Transform newGround)
+    {
+        int rand = Random.Range(0, 3);
+
+        if (rand == 1)
+        {
+            Instantiate(gold, newGround);
+        }
+    }
+} //Class
