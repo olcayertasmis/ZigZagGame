@@ -34,7 +34,7 @@ public class ColorChanger : MonoBehaviour
             _secondColor = colors[ChangeSecondColor()];
         }
 
-        groundMaterial.color = Color.Lerp(groundMaterial.color, _secondColor, 0.003f);
+        groundMaterial.color = Color.Lerp(groundMaterial.color, _secondColor, 1f * Time.deltaTime);
     }
 
     private int ChangeSecondColor()

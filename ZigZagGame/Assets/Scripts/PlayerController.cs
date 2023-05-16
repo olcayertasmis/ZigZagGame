@@ -26,6 +26,11 @@ public class PlayerController : MonoBehaviour
         score = GetComponent<Score>();
     }
 
+    private void Start()
+    {
+        Application.targetFrameRate = Screen.currentResolution.refreshRate;
+    }
+
     private void FixedUpdate()
     {
         if (!isDead && !isStart) return;
